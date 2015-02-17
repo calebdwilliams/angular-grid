@@ -8,6 +8,23 @@ GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, 
 	self.columns = ['A', 'B', 'C', 'D', 'E'];
 	self.rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
+	function checkCells(content) {
+		var pattern = /\{[A-Z]+[0-9]\}/ig;
+		if (content && content.indexOf('{') !== -1 && content.indexOf('}') !== -1) {
+			var variables = content.match(pattern),
+				varLocation = [];
+
+			for (var i = 0; i < variables.length; i++) {
+				varLocation.push(content.indexOf(variables[i]));
+			}
+
+			return {
+				variables: variables,
+				location: varLocation
+			};
+		}
+	};
+
 	self.change = function(item, location) {
 		return LinkFactory.checkModel(item, function(result) {
 			self.cells[location] = self.cells[result];
@@ -21,6 +38,15 @@ GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, 
 
 	self.liveParse = function(cell) {
 		var value = self.cells[cell];
+		var replace = checkCells(value);
+
+		if (replace) {
+			for (var i = 0; i < replace.variables.length; i++) {
+				var newCell = replace.variables[i].replace('{','').replace('}','').toUpperCase().trim();
+				value = value.replace(replace.variables[i], self.cells[newCell])
+			}
+		}
+
 		try {
 			var result = $parse(value)(self);
 			if (result) {

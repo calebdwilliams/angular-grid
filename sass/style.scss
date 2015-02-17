@@ -1,0 +1,223 @@
+@import '_reset';		// Eric Meyer's CSS Reset
+@import '_colors';		// Color variables
+@import '_bootstrap';	// Twitter Bootstrap
+
+@import url("http://fonts.googleapis.com/css?family=Roboto+Slab:700|Exo+2:300,600");
+* {
+	box-sizing: border-box;
+}
+body {
+	background: $white;
+	font-family: Helvetica, Arial, sans-serif;
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Roboto Slab';
+	}
+	.row {
+		background: $white;
+	}
+	main {
+		border-bottom: 1px solid $gray;
+		border-left: 1px solid $gray;
+		border-right: 1px solid $gray;
+	}
+}
+.highlight {
+	color: $white;
+	font-weight: bold;
+	padding: 5px;
+}
+.item {
+	padding-left: 30px;
+	h3 {
+		margin-top: 0;
+	}
+	.controls {
+		margin-top: 15px;
+		label {
+			border: 1px solid darken($paler-yellow, 20%);
+			display: inline-block;
+			margin-right: 30px;
+			padding: 1px 10px 1px 5px;
+		}
+	}
+}
+.bigger {
+	font-size: 1.25em;
+}
+ul {
+	list-style-type: circle;
+	margin: 1em;
+}
+table {
+	&.table {
+		border: 1px solid #ccc;
+		border-right: 0;
+		border-collapse: separate;
+		border-spacing: 0;
+		box-sizing: initial;
+		th {
+			background: $light-gray;
+			border-right: 1px solid #ccc;
+			font-weight: bold;
+			text-align: center;
+		}
+		td {
+			border-right: 1px solid #ccc;
+			border-spacing: 0;
+			padding: 0 !important;
+			position: relative;
+			input[type="text"] {
+				border: 0;
+				height: 100%;
+				margin: 0;
+				padding: 5px 10px;
+				position: absolute;
+				width: 100%;
+				&:focus, &.focused {
+					box-shadow: inset 0 0 2px 2px $ski-light-blue;
+					outline: 0;
+				}
+				&:unfocused {
+					box-shadow: 0;
+					outline: 0;
+				}
+			}
+		}
+	}
+}
+form {
+	background: $ski-light-grey;
+	margin-bottom: 1em;
+	padding: 1em;
+	div {
+		margin-bottom: 10px;
+	}
+	h2 {
+		border-bottom: 1px solid darken($ski-light-grey, 25%);
+		margin-top: 0;
+		padding-bottom: 10px;
+	}
+	label {
+		display: block;
+		width: 100%;
+		span {
+			color: $red;
+		}
+	}
+	button {
+		margin-top: 1em;
+	}
+	textarea {
+		width: 100%;
+	}
+	input {
+		&[type="submit"], &[type="button"] {
+			margin-top: 1em;
+		}
+		&[type="text"], &[type="password"], &[type="date"] {
+			width: 100%;
+		}
+		&:-webkit-autofill {
+			box-shadow: 0 0 0 1000px white inset;
+		}
+		&.ng-invalid {
+			color: $ski-dark-blue;
+		}
+	}
+	select {
+		width: 100%;
+	}
+	.ng-invalid {
+		&~label {
+			&:after {
+				content: "*";
+				color: red;
+				display: inline;
+				margin-left: 5px;
+			}
+		}
+	}
+}
+a {
+	&.btn {
+		background: $orange;
+		color: $white;
+		transition: all 1s cubic-bezier(0.0950,0.050,0.795,0.035);
+		transition-delay: 0.2s;
+		&:hover {
+			background: $dark-blue;
+		}
+	}
+}
+.card-wrap {
+	perspective: 100px;
+	perspective-origin: 50% 100%;
+	.card {
+		background: $cyan;
+		cursor: pointer;
+		height: 300px;
+		margin: 1em 0;
+		transition: all 1s ease-in-out;
+		width: 300px;
+		// 3D transforms, need to define a perspective
+		// This is essentially the distance from the viewer to the object
+		// Lower numbers are closer (higher distortion)
+		// perspective-origin establishes the vanishing point (default: 50% 50%)
+		-webkit-transform-style: preserve-3d;
+		-moz-transform-style: preserve-3d;
+		transform-style: preserve-3d;
+		h1 {
+			color: white;
+			text-align: center;
+			text-transform: uppercase;
+			padding-top: 120px;
+		}
+		&:hover {
+			background: $orange;
+			// transform: translate(10px, 10px) scale(0.75,0.75) rotate(180deg);
+			// transform-origin: 0 100%;
+			transform: rotate3d(10,20,20,15deg);
+			transition: all 1s ease-in-out;
+		}
+	}
+}
+.box-grey {
+	background: $ski-light-grey;
+	margin-top: 1em;
+	padding: 15px;
+}
+label {
+	display: block;
+}
+.done {
+	background-color: green;
+}
+.pending {
+	background-color: red;
+}
+.item {
+	background: $paler-yellow;
+	margin: 10px 0;
+	padding: 10px;
+	.name {
+		font-weight: bold;
+	}
+	.author {
+		&:before {
+			content: "- ";
+		}
+	}
+	&:first-of-type {
+		margin-top: 0;
+	}
+}
+div[contenteditable] {
+	background: $ski-light-grey;
+	border: 1px solid #ccc;
+	border-bottom: 0;
+	padding: 15px;
+	&:focus {
+		box-shadow: inset 0 0 2px 2px $ski-light-blue;
+		outline: 0;
+	}
+}

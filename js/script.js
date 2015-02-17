@@ -9,8 +9,8 @@ GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, 
 	self.rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 	function checkCells(content) {
-		var pattern = /\{[A-Z]+[0-9]\}/ig;
-		if (content && content.indexOf('{') !== -1 && content.indexOf('}') !== -1) {
+		if (content && typeof content === 'string' && content.indexOf('{') !== -1 && content.indexOf('}') !== -1) {
+			var pattern = /\{[A-Z]+[0-9]\}/ig;
 			var variables = content.match(pattern),
 				varLocation = [];
 
@@ -22,6 +22,8 @@ GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, 
 				variables: variables,
 				location: varLocation
 			};
+		} else {
+			return null;
 		}
 	};
 

@@ -2,7 +2,7 @@
 
 var GridApp = angular.module('GridApp', []);
 
-GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, LinkFactory) {
+GridApp.controller('GridController', ['$parse', function($parse) {
 	var self = this;
 
 	self.columns = ['A', 'B', 'C', 'D', 'E'];
@@ -45,7 +45,7 @@ GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, 
 		if (replace) {
 			for (var i = 0; i < replace.variables.length; i++) {
 				var newCell = replace.variables[i].replace('{','').replace('}','').toUpperCase().trim();
-				value = value.replace(replace.variables[i], self.cells[newCell])
+				value = value.replace(replace.variables[i], self.cells[newCell]);
 			}
 		}
 
@@ -63,9 +63,24 @@ GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, 
 
 	self.parse = function(cell) {
 		var value = self.cells[cell];
+
+		var replace = checkCells(value);
+
+		if (replace) {
+			for (var i = 0; i < replace.variables.length; i++) {
+				var newCell = replace.variables[i].replace('{','').replace('}','').toUpperCase().trim();
+				value = value.replace(replace.variables[i], self.cells[newCell]);
+			}
+		}
+
 		try {
 			var result = $parse(value)(self);
-			if (result) {self.cells[cell] = result} else {return value;}
+			if (result && !replace) {
+				self.cells[cell] = result;
+			} else if (result && replace) {
+				self.cells[cell].result = result;
+				return value;
+			}
 		} catch(e) {
 			return value;
 		}
@@ -92,28 +107,4 @@ GridApp.controller('GridController', ['$parse', 'LinkFactory', function($parse, 
 	}
 
 	self.cells = {};
-	// self.cells.A1 = 'test';
-}]);
-
-GridApp.factory('LinkFactory', ['$http', '$q', function($http, $q) {
-	return {
-		checkModel: function(content, callback) {
-			var pattern = /\{[A-Z]+[0-9]\}/i;
-
-			if (content && content.indexOf('{') !== -1) {
-				console.log(content);
-				var replacement = content.match(pattern)[0];
-
-				replacement = replacement.replace('{','');
-				replacement = replacement.replace('}','');
-				replacement = replacement.toUpperCase();
-
-				console.log(replacement);
-				callback(replacement);
-				return replacement;
-			} else {
-				console.log('nope');
-			}
-		}
-	}
 }]);
